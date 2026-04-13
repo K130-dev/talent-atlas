@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8fafc;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
+  /* Text selection */
+  ::selection {
+    background: rgba(59, 130, 246, 0.15);
+  }
+}
+
+/* Dot grid background pattern */
+.dot-grid {
+  background-image: radial-gradient(circle, #e2e8f0 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Level badge */
+.level-badge {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-size: 11px;
+}
+
+/* Tag base */
+.tag {
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 2px 8px;
+  transition: all 0.15s ease;
+}
+
+/* Score ring animation */
+.score-ring-circle {
+  transform-origin: center;
+  transform: rotate(-90deg);
+}
+
+/* Smooth transitions for cards */
+.card-base {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.card-base:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 无权限人才卡下半区：仅朦胧磨砂，无网格 */
+.mosaic-overlay {
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(248, 250, 252, 0.52) 0%,
+    rgba(241, 245, 249, 0.62) 100%
+  );
+  backdrop-filter: blur(6px) saturate(0.88);
+  -webkit-backdrop-filter: blur(6px) saturate(0.88);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.45);
+}
+
+/* Tab active indicator */
+.tab-active {
+  position: relative;
+}
+
+.tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #3b82f6;
+  border-radius: 1px 1px 0 0;
+}
+
+/* Gradient text - elegant blue */
+.gradient-text {
+  background: linear-gradient(135deg, #0066ff 0%, #00a0ff 25%, #00d4ff 50%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Glow effect for search */
+.search-glow {
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.1),
+              0 4px 16px rgba(59, 130, 246, 0.1);
+}
+
+.search-glow:focus-within {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3),
+              0 4px 24px rgba(59, 130, 246, 0.15);
+}
