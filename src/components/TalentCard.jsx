@@ -30,7 +30,7 @@ function SoftMatchBlocks({ softMatches }) {
   if (softMatches.length === 0) return null
   return (
     <div className="mt-3 flex items-center gap-2">
-      <div className="flex items-center gap-1 px-2 py-1 rounded bg-slate-100 text-slate-500 text-xs font-medium shrink-0">
+      <div className="flex items-center gap-1 px-2 py-1 rounded bg-[var(--tag-bg)] text-[var(--text-muted)] text-xs font-medium shrink-0">
         <Sparkles className="w-3 h-3" />
         软匹配
       </div>
@@ -40,11 +40,11 @@ function SoftMatchBlocks({ softMatches }) {
           return (
             <span
               key={`soft-${i}`}
-              className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100"
+              className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-[var(--tag-bg)] text-[var(--text-color)] border border-[var(--border-subtle)]"
             >
               {tag.label}
               {period && (
-                <span className="ml-1 px-1 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold">
+                <span className="ml-1 px-1 py-0.5 rounded bg-[var(--color-accent-1)]/20 text-[var(--color-accent-1)] text-[10px] font-bold">
                   {period}
                 </span>
               )}
@@ -143,9 +143,9 @@ export default function TalentCard({ employee, index, onClick, semanticHighlight
         delay: index * 0.05,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className={`bg-white rounded-xl border border-slate-200/60 relative ${
+      className={`glass-panel rounded-xl relative ${
         hasPermission
-          ? 'cursor-pointer overflow-hidden card-base hover:shadow-lg hover:shadow-blue-900/5 hover:border-blue-200'
+          ? 'cursor-pointer overflow-hidden card-base hover:shadow-lg hover:shadow-[var(--color-accent-1)]/10 hover:border-[var(--color-accent-1)]/30'
           : 'overflow-visible'
       }`}
       onClick={hasPermission ? handleCardClick : undefined}

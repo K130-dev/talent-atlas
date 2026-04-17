@@ -1,6 +1,9 @@
 import { Sparkles } from 'lucide-react'
 import AiSummaryHighlight from './AiSummaryHighlight'
+import { AiEvaluationSection } from './AiTalentPresentation'
+import WorkNetwork from './WorkNetwork'
 import { AI_EVALUATION_SECTIONS, getEmployeeAiSummaryText } from '../utils/aiEvaluation'
+import { buildWorkNetwork } from '../utils/workNetwork'
 
 function summaryText(employee) {
   return getEmployeeAiSummaryText(employee)
@@ -15,12 +18,12 @@ export default function TalentDetail({ employee, semanticHighlightPhrases }) {
   const text = summaryText(employee)
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex min-h-0 flex-1 flex-col">
       {/* Header with Avatar */}
-      <div className="px-6 py-5 border-b border-slate-200">
+      <div className="shrink-0 border-b border-violet-100/90 bg-white/50 px-6 py-5">
         <div className="flex items-start gap-4">
-          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center shadow-sm flex-shrink-0">
-            <span className="font-bold text-xl text-slate-700">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-100 via-violet-50 to-violet-100 shadow-sm ring-1 ring-violet-200/40">
+            <span className="text-xl font-bold text-indigo-950/90">
               {employee.name.slice(0, 2)}
             </span>
           </div>
@@ -31,40 +34,53 @@ export default function TalentDetail({ employee, semanticHighlightPhrases }) {
         </div>
       </div>
 
-      {/* AI 综合评价：结构化三项 + 与卡片相同的软匹配高亮 */}
-      <div className="flex-1 px-6 py-5 overflow-y-auto">
-        <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl p-5 border border-slate-100">
-          <div className="flex items-center gap-2 mb-4">
-            <Sparkles className="w-5 h-5 text-amber-500" />
-            <h3 className="text-base font-semibold text-slate-700">AI 综合评价</h3>
+      {/* AI Talent Card（占满头像与工作网络之间剩余高度，内容区内部滚动）+ 工作网络 */}
+      <div className="flex min-h-0 flex-1 flex-col gap-3 px-6 py-4">
+        <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-violet-100/70 bg-white/90 shadow-sm shadow-indigo-950/[0.04] ring-1 ring-violet-100/60">
+          <div className="relative shrink-0 border-b border-violet-100/80 bg-gradient-to-r from-violet-50/50 to-indigo-50/40 px-4 py-3">
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="h-4 w-4 shrink-0 text-violet-600" strokeWidth={2} aria-hidden />
+              <div className="min-w-0">
+                <h3 className="text-sm font-semibold text-slate-800">AI Talent Card</h3>
+                <p className="text-[11px] text-violet-600/70">下方为工作网络</p>
+              </div>
+            </div>
           </div>
 
-          {employee.aiEvaluation ? (
-            <div className="space-y-4">
-              {AI_EVALUATION_SECTIONS.map(({ key, label }) => (
-                <div key={key}>
-                  <h4 className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    {label}
-                  </h4>
-                  <AiSummaryHighlight
+          <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain px-4">
+            {employee.aiEvaluation ? (
+              <div className="divide-y divide-violet-100/90">
+                {AI_EVALUATION_SECTIONS.map(({ key, label }) => (
+                  <AiEvaluationSection
+                    key={key}
+                    sectionKey={key}
+                    label={label}
                     text={employee.aiEvaluation[key] || ''}
                     phrases={softHighlightPhrases}
-                    className="text-sm text-slate-600"
-                    lineClamp={0}
                   />
-                </div>
-              ))}
-            </div>
-          ) : text ? (
-            <AiSummaryHighlight
-              text={text}
-              phrases={softHighlightPhrases}
-              className="text-sm text-slate-600"
-              lineClamp={0}
-            />
-          ) : (
-            <p className="text-sm text-slate-500 text-center py-4">暂无 AI 总结</p>
-          )}
+                ))}
+              </div>
+            ) : text ? (
+              <div className="py-4">
+                <AiSummaryHighlight
+                  text={text}
+                  phrases={softHighlightPhrases}
+                  className="text-[13px] leading-relaxed text-slate-600"
+                  lineClamp={0}
+                />
+              </div>
+            ) : (
+              <p className="py-8 text-center text-xs text-slate-500">暂无 AI 总结</p>
+            )}
+          </div>
+        </div>
+
+        <div className="shrink-0">
+          <WorkNetwork
+            network={buildWorkNetwork(employee)}
+            centerName={employee.name}
+            seed={employee.id ?? 0}
+          />
         </div>
       </div>
     </div>

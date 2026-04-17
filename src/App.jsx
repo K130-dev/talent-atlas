@@ -9,6 +9,7 @@ import SlideOver from './components/SlideOver'
 import TalentDetail from './components/TalentDetail'
 import CustomQueryModal from './components/CustomQueryModal'
 import AddSemanticKeywordModal from './components/AddSemanticKeywordModal'
+import NebulaCanvas from './components/canvas/NebulaCanvas'
 
 const loadingMessages = [
   'Scouting the talent constellations...',
@@ -170,13 +171,27 @@ export default function App() {
     return searchResults.filter((e) => e.hasPermission !== false)
   }, [searchResults, resultScope])
 
+  /** 首页/加载中保留星云；进入搜索结果展示阶段后关掉，避免干扰阅读列表 */
+  const showNebulaHero = !(hasSearched && !isSearching)
+
   return (
     <div className="min-h-screen bg-[#f8fafc] relative overflow-x-hidden">
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-[#f8fafc] bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:20px_20px] opacity-60"></div>
+      {showNebulaHero && (
+        <>
+          <NebulaCanvas
+            employees={mockEmployees}
+            onTalentClick={(emp) => setSelectedEmployee(emp)}
+          />
+          <div className="atmosphere" aria-hidden />
+        </>
+      )}
+      {/* 有结果列表时用 main 同款点阵底，与星云互斥 */}
+      {!showNebulaHero && (
+        <div className="absolute inset-0 -z-10 h-full w-full bg-[#f8fafc] bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:20px_20px] opacity-60" />
+      )}
 
       {/* Header - Glass effect */}
-      <header className="glass border-b border-slate-200/60 sticky top-0 z-20">
+      <header className="glass border-b border-slate-200/60 sticky top-0 z-20 pointer-events-auto">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-sm shadow-blue-500/20">
@@ -185,18 +200,20 @@ export default function App() {
             <h1 className="text-xl font-bold tracking-tight text-slate-900">Talent Atlas</h1>
             <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-slate-100 text-slate-500 rounded-md border border-slate-200">Internal</span>
           </div>
-          <div className="text-sm font-medium text-slate-400">Enterprise</div>
+          <div className="text-sm font-medium text-slate-400">developed by Wenkai</div>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 py-12">
+      {/* pointer-events：宽屏侧栏空白处点击穿透到星云；内容区保持可点；小屏整列为内容区 */}
+      <main className="relative z-10 pointer-events-auto md:pointer-events-none">
+        <div className="max-w-5xl mx-auto px-6 py-12 pointer-events-auto">
         {/* Search Section - Centered */}
         <div className="max-w-3xl mx-auto mb-16">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="text-center mb-10"
+            className="text-center mb-10 pointer-events-none"
           >
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
               <AnimatePresence mode="wait">
@@ -243,7 +260,7 @@ export default function App() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={searchPlaceholder}
-                className="w-full py-7 text-lg border-0 shadow-none outline-none bg-transparent placeholder:text-slate-400"
+                className="min-w-0 w-full py-7 text-lg border-0 shadow-none outline-none bg-transparent placeholder:text-slate-400"
                 autoFocus
               />
               {query && (
@@ -387,6 +404,29 @@ export default function App() {
               </>
             )}
           </div>
+
+          {/* 示例查询：与硬过滤/软匹配同一列，避免外层 mb-16 造成过大空隙 */}
+          <AnimatePresence>
+            {!hasSearched && !isSearching && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="grid grid-cols-3 gap-2 mt-3 w-full"
+              >
+                {exampleQueries.slice(0, 3).map((q) => (
+                  <button
+                    key={q.id}
+                    onClick={() => handleExampleClick(q)}
+                    className="min-w-0 text-left leading-snug whitespace-normal break-words text-[11px] sm:text-sm px-2 sm:px-3 py-2 rounded-xl border border-slate-200 text-slate-600
+                               hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-all font-medium"
+                  >
+                    {q.text}
+                  </button>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Loading State */}
@@ -474,29 +514,7 @@ export default function App() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Quick examples - only show when not searching */}
-        <AnimatePresence>
-          {!hasSearched && !isSearching && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex flex-wrap justify-center gap-2 mt-4"
-            >
-              {exampleQueries.slice(0, 3).map((q) => (
-                <button
-                  key={q.id}
-                  onClick={() => handleExampleClick(q)}
-                  className="text-sm px-4 py-2 rounded-xl border border-slate-200 text-slate-600
-                             hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-all font-medium"
-                >
-                  {q.text}
-                </button>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        </div>
       </main>
 
       {/* Employee Detail SlideOver */}
