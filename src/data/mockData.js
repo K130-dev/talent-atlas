@@ -1,5 +1,5 @@
-// Trip.com 真实的员工数据 Mock
-// 基于 edw_emp_ful schema 和真实业务场景
+// Mock 员工数据
+// 基于企业真实字段：级别、事业部、职务序列、学历、地点等
 
 export const mockEmployees = [
   {
@@ -27,7 +27,7 @@ export const mockEmployees = [
     hire_date: '2018-06-15',
     tenure: 7,
     hasPermission: true,
-    bpContact: 'hr-bp-ticket@trip.com',
+    bpContact: 'hr-bp@company.com',
     tags: ['分布式架构', '高并发系统', 'Java', '技术专家', '团队管理'],
     aiEvaluation: {
       mainWork:
@@ -59,7 +59,7 @@ export const mockEmployees = [
     pstn_sqnc_name: '技术/研发序列',
     bu_id: 'BU006',
     hasPermission: false,
-    bpContact: 'hr-bp-fu@trip.com',
+    bpContact: 'hr-bp@company.com',
     bu_name: 'FU-技术中心',
     bu_cname: 'FU-技术中心',
     dept_name: '智能化研发部',

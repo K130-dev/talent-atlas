@@ -185,7 +185,7 @@ export default function App() {
             <h1 className="text-xl font-bold tracking-tight text-slate-900">Talent Atlas</h1>
             <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-slate-100 text-slate-500 rounded-md border border-slate-200">Internal</span>
           </div>
-          <div className="text-sm font-medium text-slate-400">Trip.com Group</div>
+          <div className="text-sm font-medium text-slate-400">Enterprise</div>
         </div>
       </header>
 

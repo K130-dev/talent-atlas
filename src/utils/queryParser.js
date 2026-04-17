@@ -1,6 +1,6 @@
 /**
  * Query Parser - 解析自然语言查询
- * 基于 Trip.com 真实字段：级别、事业部(BU)、职务序列、学历、地点等
+ * 基于企业真实字段：级别、事业部(BU)、职务序列、学历、地点等
  */
 
 import { summaryMatchesSemantic } from './semanticVectorMock.js'
